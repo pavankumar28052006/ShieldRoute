@@ -577,8 +577,8 @@ False Positives              →  Tiered fraud score + selfie recovery path
 - [x] Fraud detection and adversarial defense architecture
 - [x] Tech stack finalization
 - [x] README documentation
-- [ ] Prototype wireframes *(in progress)*
-- [ ] Phase 1 demo video
+- [x] Prototype wireframes
+- [x] Phase 1 demo video
 
 ### Phase 2 — Automation & Protection (March 21–April 4)
 
