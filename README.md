@@ -577,6 +577,8 @@ False Positives              →  Tiered fraud score + selfie recovery path
 - [x] Fraud detection and adversarial defense architecture
 - [x] Tech stack finalization
 - [x] README documentation
+- [x] Prototype wireframes
+- [x] Phase 1 demo video
 
 ### Phase 2 — Automation & Protection (March 21–April 4)
 
@@ -649,7 +651,7 @@ False Positives              →  Tiered fraud score + selfie recovery path
 
 | Resource | Link |
 |---|---|
-| GitHub Repository | *https://github.com/pavankumar28052006/gigshield* |
+| GitHub Repository | *https://github.com/pavankumar28052006/ShieldRoute* |
 | Phase 1 Demo Video | *https://drive.google.com/file/d/1-bSVwRqpcRNB13Ezh2Eb-IczZI1AFOL1/view?usp=sharing* |
 
 ---
