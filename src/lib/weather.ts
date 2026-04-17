@@ -19,6 +19,8 @@ export interface WeatherData {
   description: string;
   aqi: number;
   aqiCategory: string;
+  floodAlert: boolean;
+  curfewAlert: boolean;
   isLive: boolean;
 }
 
@@ -56,6 +58,8 @@ const STATIC_FALLBACK: WeatherData = {
   description: 'Clear',
   aqi: 120,
   aqiCategory: 'Moderate',
+  floodAlert: false,
+  curfewAlert: false,
   isLive: false,
 };
 
@@ -88,6 +92,8 @@ export async function getWeatherForZone(zone: string): Promise<WeatherData> {
     // 2. Air pollution (same key, lat/lon from weather response)
     let aqi = 120;
     let aqiCategory = 'Moderate';
+    let floodAlert = rainfall_mm >= 60;
+    let curfewAlert = false;
 
     if (lat !== undefined && lon !== undefined) {
       const aqiRes = await fetch(
@@ -103,7 +109,57 @@ export async function getWeatherForZone(zone: string): Promise<WeatherData> {
       }
     }
 
-    return { rainfall_mm, temperature_c, description, aqi, aqiCategory, isLive: true };
+    // Optional external alert hooks for T04/T05.
+    // If not provided, we rely on heuristic/default values.
+    const imdAlertsUrl = import.meta.env.VITE_IMD_ALERTS_URL as string | undefined;
+    const civicAlertsUrl = import.meta.env.VITE_CIVIC_ALERTS_URL as string | undefined;
+
+    if (imdAlertsUrl) {
+      try {
+        const imdRes = await fetch(imdAlertsUrl);
+        if (imdRes.ok) {
+          const imd = await imdRes.json();
+          const alerts = Array.isArray(imd?.alerts) ? imd.alerts : [];
+          const zoneMatch = alerts.some(
+            (a: { zone?: string; type?: string }) =>
+              (a.zone || '').toLowerCase() === zone.toLowerCase() &&
+              (a.type || '').toLowerCase().includes('flood')
+          );
+          floodAlert = floodAlert || zoneMatch;
+        }
+      } catch {
+        // Keep heuristic fallback if external alert feed fails.
+      }
+    }
+
+    if (civicAlertsUrl) {
+      try {
+        const civicRes = await fetch(civicAlertsUrl);
+        if (civicRes.ok) {
+          const civic = await civicRes.json();
+          const alerts = Array.isArray(civic?.alerts) ? civic.alerts : [];
+          curfewAlert = alerts.some(
+            (a: { zone?: string; type?: string; active?: boolean }) =>
+              (a.zone || '').toLowerCase() === zone.toLowerCase() &&
+              (a.type || '').toLowerCase().includes('curfew') &&
+              a.active === true
+          );
+        }
+      } catch {
+        // Leave false if feed unavailable.
+      }
+    }
+
+    return {
+      rainfall_mm,
+      temperature_c,
+      description,
+      aqi,
+      aqiCategory,
+      floodAlert,
+      curfewAlert,
+      isLive: true,
+    };
   } catch {
     return STATIC_FALLBACK;
   }
@@ -143,6 +199,24 @@ export function checkActiveTriggers(
       name: 'Severe AQI',
       value: `AQI ${weather.aqi}`,
       threshold: 'AQI ≥400 for 3h',
+    });
+  }
+
+  if (coveredTriggers.includes('Flood') && weather.floodAlert) {
+    active.push({
+      code: 'T04',
+      name: 'Flood Warning',
+      value: weather.rainfall_mm >= 60 ? `${weather.rainfall_mm.toFixed(1)}mm/hr` : 'External flood alert',
+      threshold: 'Flood alert active',
+    });
+  }
+
+  if (coveredTriggers.includes('Curfew') && weather.curfewAlert) {
+    active.push({
+      code: 'T05',
+      name: 'Curfew/Bandh',
+      value: 'Civic alert active',
+      threshold: 'Curfew declaration active',
     });
   }
 

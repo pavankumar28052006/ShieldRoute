@@ -22,22 +22,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const savedWorker = localStorage.getItem('shieldroute_worker');
       const savedAdmin = sessionStorage.getItem('shieldroute_admin');
 
-      if (savedWorker) {
-        try {
-          setWorkerState(JSON.parse(savedWorker));
-        } catch {
-          localStorage.removeItem('shieldroute_worker');
-        }
-      }
-
       if (savedAdmin === 'true') {
         setIsAdminState(true);
       }
 
-      // Use Supabase anonymous auth so RLS can rely on authenticated role.
       const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) {
-        await supabase.auth.signInAnonymously();
+      const authUserId = sessionData.session?.user?.id;
+
+      if (!authUserId) {
+        setWorkerState(null);
+        localStorage.removeItem('shieldroute_worker');
+        setIsReady(true);
+        return;
+      }
+
+      if (savedWorker) {
+        try {
+          const parsed = JSON.parse(savedWorker) as Worker;
+          if (parsed.id === authUserId) {
+            setWorkerState(parsed);
+            setIsReady(true);
+            return;
+          }
+        } catch {
+          // Ignore parse error and fall back to DB lookup
+        }
+      }
+
+      const { data: workerData } = await supabase
+        .from('workers')
+        .select('*')
+        .eq('id', authUserId)
+        .maybeSingle();
+
+      if (workerData) {
+        setWorkerState(workerData);
+        localStorage.setItem('shieldroute_worker', JSON.stringify(workerData));
+      } else {
+        setWorkerState(null);
+        localStorage.removeItem('shieldroute_worker');
       }
 
       setIsReady(true);
@@ -72,7 +95,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('shieldroute_worker');
     sessionStorage.removeItem('shieldroute_admin');
     await supabase.auth.signOut();
-    await supabase.auth.signInAnonymously();
   };
 
   return (

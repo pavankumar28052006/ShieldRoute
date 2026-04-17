@@ -577,31 +577,26 @@ False Positives              →  Tiered fraud score + selfie recovery path
 - [x] Fraud detection and adversarial defense architecture
 - [x] Tech stack finalization
 - [x] README documentation
-- [ ] Prototype wireframes *(in progress)*
-- [ ] Phase 1 demo video
 
 ### Phase 2 — Automation & Protection (March 21–April 4)
 
-- [ ] Worker onboarding with phone-based OTP authentication
-- [ ] Delivery zone selection and AI risk scoring at signup
-- [ ] Policy creation with dynamic weekly premium calculation (XGBoost)
-- [ ] 5-trigger monitoring engine (OpenWeatherMap + OpenAQ + IMD)
-- [ ] Automated claim initiation pipeline on trigger breach
-- [ ] Fraud detection layers L1 + L4 (GPS zone check + duplicate detection)
-- [ ] Razorpay mock payout integration (UPI simulation end-to-end)
-- [ ] Worker dashboard (active policy, coverage status, payout history)
-- [ ] Phase 2 demo video
+- [x] Worker onboarding with phone-based OTP authentication
+- [x] Delivery zone selection and AI risk scoring at signup
+- [x] Policy creation with dynamic weekly premium calculation (XGBoost)
+- [x] 5-trigger monitoring engine (OpenWeatherMap + OpenAQ + IMD)
+- [x] Automated claim initiation pipeline on trigger breach
+- [x] Fraud detection layers L1 + L4 (GPS zone check + duplicate detection)
+- [x] Razorpay mock payout integration (UPI simulation end-to-end)
+- [x] Worker dashboard (active policy, coverage status, payout history)
 
 ### Phase 3 — Scale & Optimise (April 5–17)
 
-- [ ] Advanced fraud detection layers L2 + L3 + L5
-- [ ] Graph-based fraud ring detection (coordinated attack defense)
-- [ ] Insurer admin dashboard with zone-level loss ratios and predictive forecasting
-- [ ] Full payout simulation walkthrough (trigger → fraud check → UPI credit)
-- [ ] Mobile-responsive PWA optimization
+- [x] Advanced fraud detection layers L2 + L3 + L5
+- [x] Graph-based fraud ring detection (coordinated attack defense)
+- [x] Insurer admin dashboard with zone-level loss ratios and predictive forecasting
+- [x] Full payout simulation walkthrough (trigger → fraud check → UPI credit)
+- [x] Mobile-responsive PWA optimization
 - [ ] Performance profiling and load testing
-- [ ] Final 5-minute demo video
-- [ ] Final pitch deck (PDF)
 
 ---
 
