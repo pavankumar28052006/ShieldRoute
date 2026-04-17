@@ -248,14 +248,6 @@ export default function Landing() {
               Get Protected Today
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button
-              id="hero-cta-secondary"
-              onClick={() => navigate('/simulate')}
-              className="btn-secondary text-base px-8 py-4 flex items-center justify-center gap-2"
-            >
-              <Zap className="w-5 h-5 text-emerald-400" />
-              Watch Payout Demo
-            </button>
           </div>
 
           {/* Floating UI Mock */}
@@ -521,7 +513,7 @@ export default function Landing() {
             <div className="flex items-center gap-6">
               <span className="text-slate-500 text-xs">SRM University AP · Batch 2023–2027</span>
               <a
-                href="https://github.com/pavankumar28052006/gigshield"
+                href="https://github.com/pavankumar28052006/ShieldRoute"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
