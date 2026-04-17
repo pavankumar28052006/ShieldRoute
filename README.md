@@ -652,7 +652,6 @@ False Positives              →  Tiered fraud score + selfie recovery path
 | Resource | Link |
 |---|---|
 | GitHub Repository | *https://github.com/pavankumar28052006/ShieldRoute* |
-| Phase 1 Demo Video | *https://drive.google.com/file/d/1-bSVwRqpcRNB13Ezh2Eb-IczZI1AFOL1/view?usp=sharing* |
 
 ---
 
